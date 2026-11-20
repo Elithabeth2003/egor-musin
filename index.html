@@ -426,6 +426,7 @@ footer a{color:#a8adb8}
 .vid-cap{font-size:14px;color:#4a4f57;font-weight:600}
 .videos{grid-template-columns:repeat(3,minmax(0,1fr));gap:28px}
 .videos:not(.all) .vid-extra{display:none}
+.audios:not(.all) .aud-extra{display:none}
 .vid-more{display:flex;margin:36px auto 0;min-height:56px;padding:0 32px;border:2px solid #121314;background:linear-gradient(#121314,#121314) no-repeat left/0% 100%,#fff;color:#121314;font:700 16px 'Manrope',Arial,sans-serif;cursor:pointer;align-items:center;transition:background-size .45s var(--ease),color .35s}
 .vid-more:hover{background-size:100% 100%;color:#fff}
 @media (max-width:1100px) and (min-width:861px){.videos{grid-template-columns:repeat(2,minmax(0,1fr))}}
@@ -560,6 +561,16 @@ footer a{color:#a8adb8}
   .ny-main p:not(.ny-lead){display:none}
   .ny-meta{font-size:14px;gap:8px}
 }
+
+/* ===== новогодний блок: снег и ёлка (только внутри .ny) ===== */
+.ny{position:relative;isolation:isolate;overflow:hidden}
+.ny-main,.ny-side{position:relative;z-index:1}
+.ny-fx{position:absolute;inset:0;z-index:0;pointer-events:none}
+.ny-fx canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ny-tree{position:absolute;right:1%;bottom:8px;height:calc(100% - 16px);max-height:420px;width:auto;opacity:.3}
+@media (max-width:860px){
+  .ny-tree{right:-6%;height:100%;opacity:.2}
+}
 </style>
 </head>
 <body>
@@ -639,6 +650,45 @@ footer a{color:#a8adb8}
 <section class="sec" id="topics" aria-labelledby="topics-h">
   <div class="wrap">
     <div class="ny" id="ny" aria-labelledby="ny-h">
+      <div class="ny-fx" aria-hidden="true">
+      <svg class="ny-tree" viewBox="0 0 300 400" xmlns="http://www.w3.org/2000/svg" focusable="false">
+        <defs>
+          <filter id="ny-sketch" x="-5%" y="-5%" width="110%" height="110%">
+            <feTurbulence type="fractalNoise" baseFrequency="0.025" numOctaves="2" seed="7" result="n"/>
+            <feDisplacementMap in="SourceGraphic" in2="n" scale="5"/>
+          </filter>
+        </defs>
+        <g filter="url(#ny-sketch)" stroke="#121314" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round">
+          <!-- ствол -->
+          <path d="M136 292 L134 330 L168 331 L165 291" fill="#8a5a3c"/>
+          <!-- ярусы -->
+          <path d="M150 38 L96 128 L116 124 L70 200 L98 194 L44 288 L150 296 L256 288 L202 194 L230 200 L184 124 L204 128 Z" fill="#3a7d5c"/>
+          <path d="M104 126 Q150 142 196 126" fill="none"/>
+          <path d="M78 198 Q150 222 222 198" fill="none"/>
+          <!-- гирлянда -->
+          <path d="M62 262 Q104 284 150 262 Q196 284 240 262" fill="none" stroke="#D92B2B" stroke-width="2.6" stroke-dasharray="1 9"/>
+          <!-- шары -->
+          <circle cx="128" cy="100" r="7" fill="#D92B2B"/>
+          <circle cx="172" cy="162" r="8" fill="#e8b630"/>
+          <circle cx="116" cy="172" r="7" fill="#D92B2B"/>
+          <circle cx="92" cy="244" r="8" fill="#e8b630"/>
+          <circle cx="204" cy="238" r="8" fill="#D92B2B"/>
+          <circle cx="150" cy="226" r="7" fill="#f3f5f8"/>
+          <!-- звезда -->
+          <path d="M150 6 L158 26 L180 27 L163 40 L169 61 L150 49 L131 61 L137 40 L120 27 L142 26 Z" fill="#e8b630"/>
+          <!-- подарки -->
+          <rect x="52" y="318" width="64" height="46" fill="#D92B2B"/>
+          <path d="M84 318 V364 M52 341 H116" fill="none" stroke="#f3f5f8"/>
+          <path d="M84 318 Q70 298 62 312 Q70 322 84 318 Q98 298 106 312 Q98 322 84 318" fill="#f3f5f8"/>
+          <rect x="128" y="336" width="48" height="36" fill="#3a6fb5"/>
+          <path d="M152 336 V372 M128 354 H176" fill="none" stroke="#f3f5f8"/>
+          <rect x="188" y="322" width="58" height="50" fill="#e8b630"/>
+          <path d="M217 322 V372 M188 347 H246" fill="none" stroke="#D92B2B"/>
+          <path d="M217 322 Q204 304 197 316 Q204 326 217 322 Q230 304 238 316 Q230 326 217 322" fill="#D92B2B"/>
+        </g>
+      </svg>
+      <canvas></canvas>
+    </div>
       <div class="ny-main">
         <div class="ny-kick">Новогодняя программа</div>
         <h2 class="ny-title" id="ny-h">«Научный Новый год»</h2>
@@ -745,6 +795,7 @@ footer a{color:#a8adb8}
   <div class="wrap">
     <h2 class="h2" id="audio-h">Аудио и радиоэфиры</h2>
     <div class="audios" id="audios"></div>
+    <button type="button" class="vid-more" id="audio-more" hidden>Показать ещё</button>
   </div>
 </section>
 
@@ -826,17 +877,28 @@ var SHOW_FIRST = 6;   // сколько видео показывать до к�
   if (extra > 0) { vm.hidden = false; vm.textContent = 'Показать ещё ' + extra + ' ' + (extra % 10 === 1 && extra % 100 !== 11 ? 'видео' : 'видео'); }
 
   var ab = document.getElementById('audios'), ah = '';
-  AUDIO.forEach(function(a){
+  AUDIO.forEach(function(a, i){
     var main = a.links[0];
     var more = a.links.slice(1).map(function(u){ return '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + label(u) + ' ↗</a>'; }).join('');
-    ah += '<div class="aud"><a class="aud-main" href="' + esc(main) + '" target="_blank" rel="noopener">' +
+    ah += '<div class="aud' + (i >= SHOW_FIRST ? ' aud-extra' : '') + '">' +
+      '<a class="aud-main" href="' + esc(main) + '" target="_blank" rel="noopener">' +
       '<span class="aud-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span>' +
       '<span class="aud-text"><span class="aud-title">' + esc(a.title) + '</span>' + (a.note ? '<span class="aud-note">' + esc(a.note) + '</span>' : '') + '</span>' +
       '<span class="aud-src">' + label(main) + ' ↗</span></a>' +
       (more ? '<span class="vid-links">Слушать на: ' + more + '</span>' : '') + '</div>';
   });
   ab.innerHTML = ah;
+  var audioExtra = AUDIO.length - SHOW_FIRST;
+  var audioMore = document.getElementById('audio-more');
+  if (audioExtra > 0) {
+    audioMore.hidden = false;
+    audioMore.textContent = 'Показать ещё ' + audioExtra + ' аудио';
+  }
   if (!AUDIO.length) document.getElementById('audio').remove();
+  audioMore.addEventListener('click', function(){
+    ab.classList.add('all');
+    audioMore.hidden = true;
+  });
 })();
 </script>
 
@@ -870,9 +932,9 @@ var SHOW_FIRST = 6;   // сколько видео показывать до к�
     </div>
     <h3 class="sci-sub">Избранные работы</h3>
     <div>
-      <a class="pub" href="https://www.mdpi.com/2310-2861/12/8/743" target="_blank" rel="noopener"><span class="pub-tag">GELS · 2026</span><span class="pub-title">Polyelectrolyte Microcapsules: An Efficient and Rapid Adsorbent for Uranine ↗</span></a>
-      <div class="pub"><span class="pub-tag">БИОФИЗИКА · 2026</span><span class="pub-title">Формирование полиэлектролитных микрокапсул методом послойной самосборки</span></div>
-      <div class="pub"><span class="pub-tag">ПАТЕНТ · RU 2866787</span><span class="pub-title">Сорбционная система для очистки сточных вод от метиленового синего</span></div>
+      <a class="pub" href="https://doi.org/10.1016/j.colsurfa.2026.141811" target="_blank" rel="noopener"><span class="pub-tag">Colloids and Surfaces A: Physicochemical and Engineering Aspects · 2027</span><span class="pub-title">A novel amperometric hydrogen peroxide sensor based on Prussian Blue/polyelectrolyte microcapsule composite ↗</span></a>
+      <a class="pub" href="https://www.mdpi.com/2073-4360/18/6/690" target="_blank" rel="noopener"><span class="pub-tag">Polymers · 2026</span><span class="pub-title">Polyelectrolyte Microcapsule Stability: Non-Monotonic Layer-Dependent Desorption Kinetics of Poly(allylamine hydrochloride) ↗</span></a>
+      <a class="pub" href="https://www.sciencedirect.com/science/article/abs/pii/S1466856425002644?via%3Dihub" target="_blank" rel="noopener"><span class="pub-tag">Innovative Food Science & Emerging Technologies · 2025</span><span class="pub-title">Lactose removal in dairy products using immobilized on glass plates polyelectrolyte microcapsules with encapsulated β-galactosidase ↗</span></a>
     </div>
   </div>
 </section>
@@ -881,7 +943,7 @@ var SHOW_FIRST = 6;   // сколько видео показывать до к�
   <div class="wrap">
     <div class="lead-head">
       <h2 class="h2" id="zayavka-h" style="margin:0">Оставить заявку</h2>
-      <p class="lead-alt">Удобнее написать самому? <a href="https://t.me/Eglork" target="_blank" rel="noopener">Мой Telegram →</a></p>
+      <p class="lead-alt">Удобнее написать самому? <a href="https://t.me/Eglork" target="_blank" rel="noopener">Мой Telegram</a></p>
     </div>
 
     <div class="wiz" id="wiz">
@@ -1448,5 +1510,78 @@ var WEB3FORMS_KEY = '6b8a63cc-053b-4010-a53a-aea77884fece';   // вставьт�
 </script>
 
 <noscript><p style="padding:16px;background:#fff">Для отправки формы включите JavaScript или напишите в Telegram: t.me/Dyshneidnevnik</p></noscript>
+<script>
+/* ===== Падающий снег — только внутри блока #ny ===== */
+(function(){
+  var box = document.getElementById('ny');
+  if (!box) return;
+  var cv = box.querySelector('.ny-fx canvas');
+  if (!cv || !cv.getContext) return;
+  var ctx = cv.getContext('2d');
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var w = 0, h = 0, dpr = 1, flakes = [], raf = 0, inView = false;
+
+  function make(initial){
+    var r = 1 + Math.random() * 2.6;
+    return {
+      x: Math.random() * w,
+      y: initial ? Math.random() * h : -r * 2,
+      r: r,
+      v: 22 + r * 12 + Math.random() * 14,   // px/сек, крупные падают быстрее
+      ph: Math.random() * 6.28,
+      sw: 8 + Math.random() * 18,             // амплитуда покачивания
+      a: .45 + Math.random() * .4
+    };
+  }
+  function resize(){
+    var rc = box.getBoundingClientRect();
+    w = Math.max(1, rc.width); h = Math.max(1, rc.height);
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    var n = Math.max(24, Math.min(80, Math.round(w * h / 7000)));
+    flakes = [];
+    for (var i = 0; i < n; i++) flakes.push(make(true));
+    if (reduce) draw(0);
+  }
+  function draw(t){
+    ctx.clearRect(0, 0, w, h);
+    for (var i = 0; i < flakes.length; i++){
+      var f = flakes[i];
+      var x = f.x + Math.sin(t / 1400 + f.ph) * f.sw;
+      ctx.beginPath();
+      ctx.arc(x, f.y, f.r, 0, 6.2832);
+      ctx.fillStyle = 'rgba(96,132,176,' + f.a + ')';
+      ctx.fill();
+    }
+  }
+  var last = 0;
+  function tick(now){
+    if (!inView || document.hidden){ raf = 0; return; }
+    var dt = Math.min((now - (last || now)) / 1000, .05); last = now;
+    for (var i = 0; i < flakes.length; i++){
+      var f = flakes[i];
+      f.y += f.v * dt;
+      if (f.y - f.r > h){ flakes[i] = make(false); }
+    }
+    draw(now);
+    raf = requestAnimationFrame(tick);
+  }
+  function start(){ if (!raf && !reduce){ last = 0; raf = requestAnimationFrame(tick); } }
+
+  resize();
+  if ('ResizeObserver' in window) new ResizeObserver(resize).observe(box);
+  else window.addEventListener('resize', resize);
+
+  if ('IntersectionObserver' in window){
+    new IntersectionObserver(function(e){
+      inView = e[0].isIntersecting;
+      if (inView) start();
+    }, {threshold: 0}).observe(box);
+  } else { inView = true; start(); }
+
+  document.addEventListener('visibilitychange', function(){ if (!document.hidden) start(); });
+})();
+</script>
 </body>
 </html>
