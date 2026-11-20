@@ -474,8 +474,7 @@ footer a{color:#a8adb8}
 .ny-num{font-family:var(--U);font-weight:700;font-size:40px;line-height:.9;color:var(--acc);min-width:64px}
 .ny-ico{font-family:var(--U);font-weight:700;font-size:22px;width:40px;height:40px;border:2px solid var(--acc);color:var(--acc);display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;margin:0 12px 0 0}
 .ny-btn{align-self:flex-start}
-.t-ny{color:inherit;text-decoration:none;font-weight:700;border-bottom:2px solid var(--acc)}
-.t-ny:hover{color:#b3242a}
+.t-ny{color:inherit;font-weight:700}
 /* крупная надпись после тем */
 .topics-note{margin-top:56px;display:grid;grid-template-columns:1fr 1fr;gap:40px;border-top:2px solid #121314;padding-top:32px}
 .topics-note p{margin:0;font-family:var(--U);font-weight:600;font-size:clamp(20px,2vw,26px);line-height:1.35}
@@ -575,7 +574,7 @@ footer a{color:#a8adb8}
 /* ===== правки: контакты на телефоне, стрелки ===== */
 body{font-variant-emoji:text}
 .ct{min-width:0}
-.ct-val{min-width:0;overflow-wrap:anywhere}
+.ct-val{min-width:0;white-space:nowrap;overflow:hidden}
 .ct-go{display:inline-flex;align-self:center;flex-shrink:0}
 @media (max-width:860px){
   .ct-val{font-size:clamp(15px,4.6vw,22px)}
@@ -716,7 +715,7 @@ body{font-variant-emoji:text}
     <h2 class="h2" id="topics-h">Темы выступлений</h2>
     <div class="topics-cols">
       <ol class="topics" start="1" style="counter-reset:t 0">
-        <li><a class="t-ny" href="#ny">Научные итоги года (новогодняя программа)</a></li>
+        <li><strong class="t-ny">Научные итоги года (новогодняя программа)</strong></li>
         <li>Мозг. Где живёт наше сознание?</li>
         <li>Киборги: ожидание и реальность. Мы переедем жить в компьютер?</li>
         <li>Еда и пищевое поведение. Что мы едим и почему нам так вкусно</li>
@@ -980,9 +979,6 @@ var SHOW_FIRST = 6;   // сколько видео показывать до к�
         <div class="tiles" data-group="format">
           <button type="button" class="tile" data-v="Публичная лекция в зале">Публичная лекция в зале</button>
           <button type="button" class="tile" data-v="Онлайн-лекция или вебинар">Онлайн-лекция или вебинар</button>
-          <button type="button" class="tile" data-v="Корпоратив, праздник, день рождения">Корпоратив, праздник, день рождения</button>
-          <button type="button" class="tile" data-v="Школа, вуз, лагерь">Школа, вуз, лагерь</button>
-          <button type="button" class="tile" data-v="Фестиваль, конференция, форум">Фестиваль, конференция, форум</button>
           <button type="button" class="tile" data-v="Интервью, подкаст, съёмка">Интервью, подкаст, съёмка</button>
           <button type="button" class="tile soft" data-v="Другое">Другое</button>
         </div>
@@ -990,7 +986,6 @@ var SHOW_FIRST = 6;   // сколько видео показывать до к�
         <div class="tiles" data-group="audience">
           <button type="button" class="tile" data-v="Взрослые">Взрослые</button>
           <button type="button" class="tile" data-v="Подростки и школьники">Подростки и школьники</button>
-          <button type="button" class="tile" data-v="Дети до 12 лет">Дети до 12 лет</button>
           <button type="button" class="tile" data-v="Специалисты">Специалисты: врачи, учёные, инженеры</button>
           <button type="button" class="tile soft" data-v="Смешанная публика">Смешанная публика</button>
         </div>
@@ -1202,7 +1197,7 @@ var WEB3FORMS_KEY = '6b8a63cc-053b-4010-a53a-aea77884fece';   // вставьт�
   var W = document.getElementById('wiz');
   var KEY = 'musin-lead-v1', TOTAL = 4;
   var S = {step:0, topicText:'', topics:[], format:'', audience:'', when:'', date:'', guests:'', place:'', city:'', name:'', how:['Позвонить'], phone:'', calltime:'', email:'', comment:'', ts:Date.now()};
-  try { var saved = JSON.parse(localStorage.getItem(KEY) || 'null'); if (saved && saved.step < 5) { Object.assign(S, saved); } } catch(e){}
+  try { var saved = JSON.parse(localStorage.getItem(KEY) || 'null'); if (saved && saved.step < 5) { Object.assign(S, saved); if (['Корпоратив, праздник, день рождения','Школа, вуз, лагерь','Фестиваль, конференция, форум'].indexOf(S.format) >= 0) S.format = ''; if (S.audience === 'Дети до 12 лет') S.audience = ''; } } catch(e){}
   var fields = {topicText:'w-topic', name:'w-name', phone:'w-phone', email:'w-email', comment:'w-comment', date:'w-date', city:'w-city'};
   var steps = W.querySelectorAll('.wstep'), err = W.querySelector('.werr');
   var back = document.getElementById('w-back'), next = document.getElementById('w-next');
@@ -1272,6 +1267,15 @@ var WEB3FORMS_KEY = '6b8a63cc-053b-4010-a53a-aea77884fece';   // вставьт�
     else err.scrollIntoView({block:'nearest', behavior:'smooth'});
   }
   function hideErr(){ err.hidden = true; }
+  function showNetErr(){
+    var body = rows().map(function(x){ return x[0] + ': ' + x[1]; }).join('\n');
+    var href = 'mailto:egor.musin.science@gmail.com?subject=' + encodeURIComponent('Заявка: пригласить спикера') + '&body=' + encodeURIComponent(body);
+    err.textContent = 'Не получилось отправить заявку: нет связи с сервером. Попробуйте ещё раз или ';
+    var a = document.createElement('a'); a.href = href; a.textContent = 'отправьте заявку письмом'; a.style.cssText = 'color:inherit;text-decoration:underline';
+    err.appendChild(a); err.appendChild(document.createTextNode(' — текст уже подставится.'));
+    err.hidden = false; err.classList.remove('shake'); void err.offsetWidth; err.classList.add('shake');
+    err.scrollIntoView({block:'nearest', behavior:'smooth'});
+  }
 
   function check(step){
     if (step === 0 && !S.topicText.trim() && !S.topics.length) return showErr('Напишите, о чём вам интересно послушать, или нажмите «Пока не знаю — посоветуйте».', 'w-topic'), false;
@@ -1350,7 +1354,7 @@ var WEB3FORMS_KEY = '6b8a63cc-053b-4010-a53a-aea77884fece';   // вставьт�
 
   function done(){
           goal('lead_sent');
-    $('w-done-h').textContent = 'Спасибо, ' + S.name.trim().split(' ')[0] + '! Заявка отправлена';
+    $('w-done-h').textContent = 'Спасибо, ' + S.name.trim().replace(/\s+/g, ' ') + '! Заявка отправлена';
     var how = S.how.indexOf('Позвонить') >= 0 ? 'позвонят' + (S.calltime && S.calltime !== 'В любое время' ? ' ' + S.calltime.toLowerCase() : '') : 'напишут';
     $('w-done-t').textContent = 'Егор или его помощник ' + how + ' вам в течение 1–2 рабочих дней.';
     go(5);
@@ -1370,10 +1374,15 @@ var WEB3FORMS_KEY = '6b8a63cc-053b-4010-a53a-aea77884fece';   // вставьт�
         'Как связаться': how, 'Заявка': msg, botcheck: ''};
       if (S.how.indexOf('E-mail') >= 0 && S.email.trim()) payload.replyto = S.email.trim();
       next.disabled = true; next.textContent = 'Отправляем…';
-      return fetch('https://api.web3forms.com/submit', {method:'POST', headers:{'Content-Type':'application/json', 'Accept':'application/json'}, body: JSON.stringify(payload)})
-        .then(function(r){ return r.json(); })
+      function post(){
+        var f = new FormData();
+        Object.keys(payload).forEach(function(k){ f.append(k, payload[k]); });
+        return fetch('https://api.web3forms.com/submit', {method:'POST', headers:{'Accept':'application/json'}, body: f}).then(function(r){ return r.json(); });
+      }
+      return post()
+        .catch(function(){ return new Promise(function(res){ setTimeout(res, 1500); }).then(post); })
         .then(function(d){ if (d.success) done(); else showErr('Не удалось отправить. Напишите, пожалуйста, в Telegram.'); })
-        .catch(function(){ showErr('Нет связи с сервером. Попробуйте ещё раз или напишите в Telegram.'); })
+        .catch(function(){ showNetErr(); })
         .finally(function(){ next.disabled = false; if (S.step === 4) next.textContent = 'Отправить заявку'; });
     }
     var fd = new FormData();
@@ -1406,7 +1415,6 @@ var WEB3FORMS_KEY = '6b8a63cc-053b-4010-a53a-aea77884fece';   // вставьт�
       e.preventDefault();
       if (!/Научный Новый год/.test(S.topicText)) S.topicText = ('«Научный Новый год» ' + S.topicText).trim();
       $('w-topic').value = S.topicText;
-      if (!S.format) S.format = 'Корпоратив, праздник, день рождения';
       S.topics = []; save(); go(0);
     });
   });
@@ -1589,6 +1597,24 @@ var WEB3FORMS_KEY = '6b8a63cc-053b-4010-a53a-aea77884fece';   // вставьт�
   } else { inView = true; start(); }
 
   document.addEventListener('visibilitychange', function(){ if (!document.hidden) start(); });
+})();
+</script>
+<script>
+/* ===== Контакты: длинный текст уменьшается, пока не поместится в строку ===== */
+(function(){
+  var vals = document.querySelectorAll('.ct-val');
+  if (!vals.length) return;
+  function fit(){
+    vals.forEach(function(el){
+      el.style.fontSize = '';
+      var size = parseFloat(getComputedStyle(el).fontSize);
+      while (el.scrollWidth > el.clientWidth + 1 && size > 10){ size -= .5; el.style.fontSize = size + 'px'; }
+    });
+  }
+  fit();
+  window.addEventListener('resize', fit);
+  window.addEventListener('load', fit);
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fit);
 })();
 </script>
 </body>
