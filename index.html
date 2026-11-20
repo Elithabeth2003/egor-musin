@@ -831,7 +831,7 @@ var VIDEOS = [
 ];
 var AUDIO = [
   {title: 'Заболевания 21 века — новые технологии в лечении онкологии', note: 'Радио Серебряный дождь. "Цифровой океан"', links: ['https://vk.com/video-206445989_456239691']},
-  {title: 'Как Луи Пастер ввел понятие "микроб"', note: 'Радио Маяк. "Как знать"', links: ['https://smotrim.ru/audio/2895155']},
+  {title: 'Роль печени в реанимационном процессе очень важна', note: 'Радио Маяк. "Как знать"', links: ['https://smotrim.ru/audio/2895155']},
   {title: 'Эпизод 1: Как зародилась жизнь на земле?', note: 'Радио Звезда. "Область знаний"', links: ['https://vkvideo.ru/video-24019666_456239953']},
   {title: 'Эпизод 2: Как работает клеточная память в живых организмах?', note: 'Радио Звезда. "Область знаний"', links: ['https://vk.com/video-24019666_456239954']},
   {title: 'Эпизод 3: Каким образом рыба превратилась в жабу?', note: 'Радио Звезда. "Область знаний"', links: ['https://vk.com/video-24019666_456239956']},
@@ -1369,9 +1369,15 @@ var WEB3FORMS_KEY = '6b8a63cc-053b-4010-a53a-aea77884fece';   // вставьт�
       if (!WEB3FORMS_KEY) return showErr('Форма ещё не подключена. Напишите, пожалуйста, в Telegram — ссылка выше.');
       if ($('w-website').value) return;
       var how = S.how.map(function(h){ return h === 'Позвонить' && S.calltime ? 'Позвонить ' + S.calltime.toLowerCase() : h; }).join(', ');
+      // Все данные — одним аккуратным текстом в поле message; названия полей только латиницей,
+      // иначе русские «заголовки» в письме превращаются в нечитаемые символы.
+      var R = rows(), pick = function(names){ return R.filter(function(x){ return names.indexOf(x[0]) >= 0; }).map(function(x){ return x[0] + ': ' + x[1]; }).join('\n'); };
+      var letter = ['НОВАЯ ЗАЯВКА С САЙТА', '',
+        'О МЕРОПРИЯТИИ', pick(['Тема','Мероприятие','Слушатели','Когда','Гостей','Где']), '',
+        'КОНТАКТЫ', pick(['Имя','Связаться','Телефон','Почта'])];
+      var cm = pick(['Комментарий']); if (cm) letter.push('', 'КОММЕНТАРИЙ', cm.replace(/^Комментарий: /, ''));
       var payload = {access_key: WEB3FORMS_KEY, subject: 'Заявка: пригласить спикера — ' + S.name.trim(), from_name: 'Сайт Егора Мусина',
-        'Имя': S.name.trim(), 'Телефон': needPhone() ? S.phone : '—', 'Почта': S.how.indexOf('E-mail') >= 0 ? S.email.trim() : '—',
-        'Как связаться': how, 'Заявка': msg, botcheck: ''};
+        name: S.name.trim(), message: letter.join('\n'), botcheck: ''};
       if (S.how.indexOf('E-mail') >= 0 && S.email.trim()) payload.replyto = S.email.trim();
       next.disabled = true; next.textContent = 'Отправляем…';
       function post(){
