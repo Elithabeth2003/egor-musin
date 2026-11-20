@@ -571,6 +571,15 @@ footer a{color:#a8adb8}
 @media (max-width:860px){
   .ny-tree{right:-6%;height:100%;opacity:.2}
 }
+
+/* ===== правки: контакты на телефоне, стрелки ===== */
+body{font-variant-emoji:text}
+.ct{min-width:0}
+.ct-val{min-width:0;overflow-wrap:anywhere}
+.ct-go{display:inline-flex;align-self:center;flex-shrink:0}
+@media (max-width:860px){
+  .ct-val{font-size:clamp(15px,4.6vw,22px)}
+}
 </style>
 </head>
 <body>
@@ -612,7 +621,7 @@ footer a{color:#a8adb8}
   </nav>
   <div class="mm-foot">
     <a class="btn btn-acc" href="#zayavka">Пригласить спикера</a>
-    <a class="mm-tg" href="https://t.me/Dyshneidnevnik" target="_blank" rel="noopener">Telegram «Дневник Душнилы» →</a>
+    <a class="mm-tg" href="https://t.me/Dyshneidnevnik" target="_blank" rel="noopener">Telegram «Дневник Душнилы» →︎</a>
   </div>
 </div>
 
@@ -636,7 +645,7 @@ footer a{color:#a8adb8}
         <a class="btn btn-acc" href="#zayavka">Пригласить спикера</a>
         <a class="btn btn-out" href="#topics">Темы выступлений</a>
       </div>
-      <a class="hero-ny" href="#ny"><i aria-hidden="true"></i>Новогодняя программа «Научный Новый год» для корпоративов →</a>
+      <a class="hero-ny" href="#ny"><i aria-hidden="true"></i>Новогодняя программа «Научный Новый год» для корпоративов →︎</a>
     </div>
     <div class="hero-photo">
       <!-- Положите портрет в img/egor-hero.webp (рекомендуется 1000×1200, до 150 КБ) -->
@@ -744,9 +753,9 @@ footer a{color:#a8adb8}
   <div class="wrap">
     <h2 class="h2" id="courses-h">Курсы лекций</h2>
     <div class="course-row">
-      <a class="course" href="https://levelvan.ru/lecturer/104670" target="_blank" rel="noopener"><span class="c-kick">Курс</span><span class="c-title">Генетика</span><span class="c-go">Смотреть в Level One ↗</span></a>
-      <a class="course" href="https://levelvan.ru/lecturer/104670" target="_blank" rel="noopener"><span class="c-kick">Курс</span><span class="c-title">Анатомия</span><span class="c-go">Смотреть в Level One ↗</span></a>
-      <a class="course" href="https://levelvan.ru/lecturer/104670" target="_blank" rel="noopener"><span class="c-kick">Курс</span><span class="c-title">Эволюция</span><span class="c-go">Смотреть в Level One ↗</span></a>
+      <a class="course" href="https://levelvan.ru/lecturer/104670" target="_blank" rel="noopener"><span class="c-kick">Курс</span><span class="c-title">Генетика</span><span class="c-go">Смотреть в Level One ↗︎</span></a>
+      <a class="course" href="https://levelvan.ru/lecturer/104670" target="_blank" rel="noopener"><span class="c-kick">Курс</span><span class="c-title">Анатомия</span><span class="c-go">Смотреть в Level One ↗︎</span></a>
+      <a class="course" href="https://levelvan.ru/lecturer/104670" target="_blank" rel="noopener"><span class="c-kick">Курс</span><span class="c-title">Эволюция</span><span class="c-go">Смотреть в Level One ↗︎</span></a>
     </div>
   </div>
 </section>
@@ -864,7 +873,7 @@ var SHOW_FIRST = 6;   // сколько видео показывать до к�
     for (var k = 0; k < v.links.length; k++) { emb = embed(v.links[k]); if (emb) { first = v.links[k]; break; } }
     var others = v.links.filter(function(u){ return u !== first || !emb; });
     if (!emb) others = v.links.slice(1);
-    var more = others.map(function(u){ return '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + label(u) + ' ↗</a>'; }).join('');
+    var more = others.map(function(u){ return '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + label(u) + ' ↗︎</a>'; }).join('');
     html += '<div class="vid' + (i >= SHOW_FIRST ? ' vid-extra' : '') + '">' +
       '<button class="vid-play" type="button" data-embed="' + esc(emb) + '" data-href="' + esc(first) + '" aria-label="Смотреть: ' + esc(v.title) + '">' +
       '<span class="vid-frame"><span class="vp-tag">' + label(first) + '</span><span class="vp-title">' + esc(v.title) + '</span>' + PLAY + '</span></button>' +
@@ -879,12 +888,12 @@ var SHOW_FIRST = 6;   // сколько видео показывать до к�
   var ab = document.getElementById('audios'), ah = '';
   AUDIO.forEach(function(a, i){
     var main = a.links[0];
-    var more = a.links.slice(1).map(function(u){ return '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + label(u) + ' ↗</a>'; }).join('');
+    var more = a.links.slice(1).map(function(u){ return '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + label(u) + ' ↗︎</a>'; }).join('');
     ah += '<div class="aud' + (i >= SHOW_FIRST ? ' aud-extra' : '') + '">' +
       '<a class="aud-main" href="' + esc(main) + '" target="_blank" rel="noopener">' +
       '<span class="aud-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span>' +
       '<span class="aud-text"><span class="aud-title">' + esc(a.title) + '</span>' + (a.note ? '<span class="aud-note">' + esc(a.note) + '</span>' : '') + '</span>' +
-      '<span class="aud-src">' + label(main) + ' ↗</span></a>' +
+      '<span class="aud-src">' + label(main) + ' ↗︎</span></a>' +
       (more ? '<span class="vid-links">Слушать на: ' + more + '</span>' : '') + '</div>';
   });
   ab.innerHTML = ah;
@@ -926,15 +935,15 @@ var SHOW_FIRST = 6;   // сколько видео показывать до к�
       <div><span class="sci-num"><span class="num" data-count="5">5</span></span><span class="sci-lbl">патентов</span></div>
     </div>
     <div class="sci-links">
-      <a href="https://www.researchgate.net/profile/Egor-Musin?ev=prf_overview" target="_blank" rel="noopener">ResearchGate ↗</a>
-      <a href="https://www.scopus.com/authid/detail.uri?authorId=57188665766" target="_blank" rel="noopener">Scopus ↗</a>
-      <a href="https://www.webofscience.com/wos/author/record/G-9260-2018" target="_blank" rel="noopener">Web of Science ↗</a>
+      <a href="https://www.researchgate.net/profile/Egor-Musin?ev=prf_overview" target="_blank" rel="noopener">ResearchGate ↗︎</a>
+      <a href="https://www.scopus.com/authid/detail.uri?authorId=57188665766" target="_blank" rel="noopener">Scopus ↗︎</a>
+      <a href="https://www.webofscience.com/wos/author/record/G-9260-2018" target="_blank" rel="noopener">Web of Science ↗︎</a>
     </div>
     <h3 class="sci-sub">Избранные работы</h3>
     <div>
-      <a class="pub" href="https://doi.org/10.1016/j.colsurfa.2026.141811" target="_blank" rel="noopener"><span class="pub-tag">Colloids and Surfaces A: Physicochemical and Engineering Aspects · 2027</span><span class="pub-title">A novel amperometric hydrogen peroxide sensor based on Prussian Blue/polyelectrolyte microcapsule composite ↗</span></a>
-      <a class="pub" href="https://www.mdpi.com/2073-4360/18/6/690" target="_blank" rel="noopener"><span class="pub-tag">Polymers · 2026</span><span class="pub-title">Polyelectrolyte Microcapsule Stability: Non-Monotonic Layer-Dependent Desorption Kinetics of Poly(allylamine hydrochloride) ↗</span></a>
-      <a class="pub" href="https://www.sciencedirect.com/science/article/abs/pii/S1466856425002644?via%3Dihub" target="_blank" rel="noopener"><span class="pub-tag">Innovative Food Science & Emerging Technologies · 2025</span><span class="pub-title">Lactose removal in dairy products using immobilized on glass plates polyelectrolyte microcapsules with encapsulated β-galactosidase ↗</span></a>
+      <a class="pub" href="https://doi.org/10.1016/j.colsurfa.2026.141811" target="_blank" rel="noopener"><span class="pub-tag">Colloids and Surfaces A: Physicochemical and Engineering Aspects · 2027</span><span class="pub-title">A novel amperometric hydrogen peroxide sensor based on Prussian Blue/polyelectrolyte microcapsule composite ↗︎</span></a>
+      <a class="pub" href="https://www.mdpi.com/2073-4360/18/6/690" target="_blank" rel="noopener"><span class="pub-tag">Polymers · 2026</span><span class="pub-title">Polyelectrolyte Microcapsule Stability: Non-Monotonic Layer-Dependent Desorption Kinetics of Poly(allylamine hydrochloride) ↗︎</span></a>
+      <a class="pub" href="https://www.sciencedirect.com/science/article/abs/pii/S1466856425002644?via%3Dihub" target="_blank" rel="noopener"><span class="pub-tag">Innovative Food Science & Emerging Technologies · 2025</span><span class="pub-title">Lactose removal in dairy products using immobilized on glass plates polyelectrolyte microcapsules with encapsulated β-galactosidase ↗︎</span></a>
     </div>
   </div>
 </section>
@@ -1063,8 +1072,8 @@ var SHOW_FIRST = 6;   // сколько видео показывать до к�
 
       <p class="werr" role="alert" hidden></p>
       <div class="wnav">
-        <button type="button" class="wbtn wbtn-out" id="w-back">← Назад</button>
-        <button type="button" class="wbtn wbtn-acc" id="w-next">Дальше →</button>
+        <button type="button" class="wbtn wbtn-out" id="w-back">←︎ Назад</button>
+        <button type="button" class="wbtn wbtn-acc" id="w-next">Дальше →︎</button>
       </div>
     </div>
   </div>
@@ -1074,10 +1083,10 @@ var SHOW_FIRST = 6;   // сколько видео показывать до к�
   <div class="wrap">
     <h2 class="h2" id="contacts-h">Контакты</h2>
     <div class="ct-list">
-      <a class="ct" href="https://t.me/Eglork" target="_blank" rel="noopener"><span class="ct-lbl">Telegram</span><span class="ct-val">@Eglork</span><span class="ct-go" aria-hidden="true">↗</span></a>
-      <a class="ct" href="https://vk.com/eglork" target="_blank" rel="noopener"><span class="ct-lbl">ВКонтакте</span><span class="ct-val">vk.com/eglork</span><span class="ct-go" aria-hidden="true">↗</span></a>
-      <a class="ct" href="mailto:egor.musin.science@gmail.com"><span class="ct-lbl">Почта</span><span class="ct-val">egor.musin.science@gmail.com</span><span class="ct-go" aria-hidden="true">↗</span></a>
-      <a class="ct" href="https://t.me/Dyshneidnevnik" target="_blank" rel="noopener"><span class="ct-lbl">Телеграм-канал</span><span class="ct-val">«Дневник Душнилы»</span><span class="ct-go" aria-hidden="true">↗</span></a>
+      <a class="ct" href="https://t.me/Eglork" target="_blank" rel="noopener"><span class="ct-lbl">Telegram</span><span class="ct-val">@Eglork</span><span class="ct-go" aria-hidden="true"><svg class="ct-arr" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
+      <a class="ct" href="https://vk.com/eglork" target="_blank" rel="noopener"><span class="ct-lbl">ВКонтакте</span><span class="ct-val">vk.com/eglork</span><span class="ct-go" aria-hidden="true"><svg class="ct-arr" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
+      <a class="ct" href="mailto:egor.musin.science@gmail.com"><span class="ct-lbl">Почта</span><span class="ct-val">egor.musin.science@gmail.com</span><span class="ct-go" aria-hidden="true"><svg class="ct-arr" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
+      <a class="ct" href="https://t.me/Dyshneidnevnik" target="_blank" rel="noopener"><span class="ct-lbl">Телеграм-канал</span><span class="ct-val">«Дневник Душнилы»</span><span class="ct-go" aria-hidden="true"><svg class="ct-arr" viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="square" aria-hidden="true" focusable="false"><path d="M7 17 17 7M8 7h9v9"/></svg></span></a>
     </div>
   </div>
 </section>
@@ -1321,7 +1330,7 @@ var WEB3FORMS_KEY = '6b8a63cc-053b-4010-a53a-aea77884fece';   // вставьт�
     W.querySelector('.wcount').textContent = n < TOTAL ? 'Шаг ' + (n+1) + ' из ' + TOTAL + ' · ' + labels[n] : (n === 4 ? 'Последний шаг — проверка' : '');
     back.hidden = n === 0 || n === 5;
     next.hidden = n === 5;
-    next.textContent = n === 4 ? 'Отправить заявку' : (n === 3 ? 'Проверить →' : 'Дальше →');
+    next.textContent = n === 4 ? 'Отправить заявку' : (n === 3 ? 'Проверить →︎' : 'Дальше →︎');
     if (n === 4) renderSum();
     paint();
     if (!noFocus) {
@@ -1542,13 +1551,12 @@ var WEB3FORMS_KEY = '6b8a63cc-053b-4010-a53a-aea77884fece';   // вставьт�
     var n = Math.max(24, Math.min(80, Math.round(w * h / 7000)));
     flakes = [];
     for (var i = 0; i < n; i++) flakes.push(make(true));
-    if (reduce) draw(0);
-  }
+    }
   function draw(t){
     ctx.clearRect(0, 0, w, h);
     for (var i = 0; i < flakes.length; i++){
       var f = flakes[i];
-      var x = f.x + Math.sin(t / 1400 + f.ph) * f.sw;
+      var x = f.x + (reduce ? 0 : Math.sin(t / 1400 + f.ph) * f.sw);
       ctx.beginPath();
       ctx.arc(x, f.y, f.r, 0, 6.2832);
       ctx.fillStyle = 'rgba(96,132,176,' + f.a + ')';
@@ -1561,13 +1569,13 @@ var WEB3FORMS_KEY = '6b8a63cc-053b-4010-a53a-aea77884fece';   // вставьт�
     var dt = Math.min((now - (last || now)) / 1000, .05); last = now;
     for (var i = 0; i < flakes.length; i++){
       var f = flakes[i];
-      f.y += f.v * dt;
+      f.y += f.v * dt * (reduce ? .35 : 1);
       if (f.y - f.r > h){ flakes[i] = make(false); }
     }
     draw(now);
     raf = requestAnimationFrame(tick);
   }
-  function start(){ if (!raf && !reduce){ last = 0; raf = requestAnimationFrame(tick); } }
+  function start(){ if (!raf){ last = 0; raf = requestAnimationFrame(tick); } }
 
   resize();
   if ('ResizeObserver' in window) new ResizeObserver(resize).observe(box);
