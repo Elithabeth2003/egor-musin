@@ -601,7 +601,7 @@ body{font-variant-emoji:text}
   <div class="tb-in">
     <a class="tb-logo" href="#top" aria-label="Егор Мусин — наверх">ЕГОР МУС<svg viewBox="0 0 80 100" aria-hidden="true"><rect width="20" height="100" fill="#fff"/><rect x="60" width="20" height="100" fill="#fff"/><polygon points="20,76 20,100 60,24 60,0" fill="#D92B2B"/></svg>Н</a>
     <nav class="tb-links" aria-label="Разделы">
-      <a href="#topics">Темы</a><a href="#about">Об авторе</a><a href="#video">Видео</a><a href="#works">Наука</a><a href="#contacts">Контакты</a>
+      <a href="#topics">Темы</a><a href="#about">О лекторе</a><a href="#video">Видео</a><a href="#works">Наука</a><a href="#contacts">Контакты</a>
     </nav>
     <a class="tb-cta" href="#zayavka">Пригласить</a>
     <button class="burger" type="button" aria-label="Открыть меню" aria-expanded="false" aria-controls="mmenu"><span></span><span></span></button>
@@ -611,7 +611,7 @@ body{font-variant-emoji:text}
 <div class="mmenu" id="mmenu" hidden>
   <nav aria-label="Меню">
     <a href="#topics">Темы выступлений</a>
-    <a href="#about">Об авторе</a>
+    <a href="#about">О лекторе</a>
     <a href="#courses">Курсы лекций</a>
     <a href="#video">Видео</a>
     <a href="#audio">Аудио</a>
@@ -629,7 +629,7 @@ body{font-variant-emoji:text}
   <nav class="nav" aria-label="Основная навигация">
     <ul>
       <li><a href="#topics">Темы выступлений</a></li>
-      <li><a href="#about">Об авторе</a></li>
+      <li><a href="#about">О лекторе</a></li>
       <li><a href="#video">Видео</a></li>
       <li><a href="#works">Наука</a></li>
       <li><a href="#contacts">Контакты</a></li>
@@ -742,7 +742,7 @@ body{font-variant-emoji:text}
       </ol>
     </div>
     <div class="topics-note">
-      <p>Возможные темы не ограничиваются списком выше — я с большим удовольствием подготовлю новую по теме, интересной вам.</p>
+      <p>Возможные темы не ограничиваются списком выше — я с большим удовольствием подготовлю новую программу по теме, интересной вам.</p>
       <p>Если хотите активности, помните: любую тему можно представить в виде <b>научной викторины</b>.</p>
     </div>
   </div>
@@ -762,7 +762,7 @@ body{font-variant-emoji:text}
 <section class="sec about" id="about" aria-labelledby="about-h">
   <div class="wrap two">
     <div>
-      <h2 class="h2" id="about-h" style="margin-bottom:32px">Об авторе</h2>
+      <h2 class="h2" id="about-h" style="margin-bottom:32px">О лекторе</h2>
       <ul class="list">
         <li>Выпускник кафедры синтетической биологии биологического факультета МГУ с золотой медалью (2017)</li>
         <li>Кандидат биологических наук по специальности «Биотехнология» (2023). Тема: «Изучение физико-химических свойств полиэлектролитных микрокапсул и разработка технологии их разрушения для создания микроконтейнеров» <span class="aside">(закажите об этом лекцию — не пожалеете)</span></li>
@@ -840,7 +840,8 @@ var AUDIO = [
   {title: 'Биология мужчин и женщин', note: 'Радио Серебряный дождь. "Венера в мехах"', links: ['https://vk.com/video-614179_456243781']},
   {title: 'Роль печени в реанимационном процессе очень важна', note: 'Радио Вести FM. "Научный факт"', links: ['https://smotrim.ru/audio/2808025']},
 ];
-var SHOW_FIRST = 6;   // сколько видео показывать до кнопки «Показать ещё»
+var SHOW_FIRST = 6
+var SHOW_FIRST_AUDIO = 3;   // сколько видео показывать до кнопки «Показать ещё»
 
 (function(){
   function host(u){ try { return new URL(u).hostname.replace(/^www\./,''); } catch(e){ return ''; } }
@@ -888,7 +889,7 @@ var SHOW_FIRST = 6;   // сколько видео показывать до к�
   AUDIO.forEach(function(a, i){
     var main = a.links[0];
     var more = a.links.slice(1).map(function(u){ return '<a href="' + esc(u) + '" target="_blank" rel="noopener">' + label(u) + ' ↗︎</a>'; }).join('');
-    ah += '<div class="aud' + (i >= SHOW_FIRST ? ' aud-extra' : '') + '">' +
+    ah += '<div class="aud' + (i >= SHOW_FIRST_AUDIO ? ' aud-extra' : '') + '">' +
       '<a class="aud-main" href="' + esc(main) + '" target="_blank" rel="noopener">' +
       '<span class="aud-ico" aria-hidden="true"><svg viewBox="0 0 24 24" width="22" height="22"><path d="M8 5v14l11-7z" fill="#fff"/></svg></span>' +
       '<span class="aud-text"><span class="aud-title">' + esc(a.title) + '</span>' + (a.note ? '<span class="aud-note">' + esc(a.note) + '</span>' : '') + '</span>' +
@@ -896,7 +897,7 @@ var SHOW_FIRST = 6;   // сколько видео показывать до к�
       (more ? '<span class="vid-links">Слушать на: ' + more + '</span>' : '') + '</div>';
   });
   ab.innerHTML = ah;
-  var audioExtra = AUDIO.length - SHOW_FIRST;
+  var audioExtra = AUDIO.length - SHOW_FIRST_AUDIO;
   var audioMore = document.getElementById('audio-more');
   if (audioExtra > 0) {
     audioMore.hidden = false;
