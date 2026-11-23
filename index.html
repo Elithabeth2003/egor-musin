@@ -383,6 +383,12 @@ footer a{color:#a8adb8}
   .swipe-hint{display:flex;align-items:center;gap:8px;margin:-24px 0 20px;font-size:15px;color:#6e7481}
   .swipe-hint i{display:inline-block;width:28px;height:2px;background:currentColor;position:relative;animation:nudge 1.8s var(--ease) infinite}
   @keyframes nudge{0%,100%{transform:none}50%{transform:translateX(8px)}}
+  /* аудио — листаются пальцем, по три в колонке */
+  .audios{display:grid;grid-auto-flow:column;grid-template-rows:repeat(3,auto);grid-auto-columns:86%;column-gap:14px;align-content:start;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -20px;padding:0 20px 8px;scroll-padding-left:20px;border-top:0}
+  .audios::-webkit-scrollbar{display:none}
+  .audios .aud{scroll-snap-align:start}
+  .audios .aud:nth-child(3n+1){border-top:2px solid #121314}
+  .audios .aud-extra{display:block!important}
   .vid:active .vid-frame svg{transform:scale(.92)}
   .pub:active .pub-title{color:#ff6b62}
   .poster>div{padding-top:24px;padding-bottom:24px}
@@ -1526,8 +1532,9 @@ var WEB3FORMS_KEY = '6b8a63cc-053b-4010-a53a-aea77884fece';   // вставьт�
   if (gal) probe('img/gallery-1.webp', function(){}, function(){ gal.remove(); });
 
   // подсказка «листайте» для каруселей на телефоне
-  ['video','gallery'].forEach(function(id){
+  ['video','audio','gallery'].forEach(function(id){
     var s = document.getElementById(id); if (!s) return;
+    if (id === 'audio' && s.querySelectorAll('.aud').length <= 3) return;
     var h2 = s.querySelector('.h2'); h2.insertAdjacentHTML('afterend', '<p class="swipe-hint" aria-hidden="true">Листайте <i></i></p>');
   });
 })();
