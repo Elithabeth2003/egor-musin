@@ -384,10 +384,9 @@ footer a{color:#a8adb8}
   .swipe-hint i{display:inline-block;width:28px;height:2px;background:currentColor;position:relative;animation:nudge 1.8s var(--ease) infinite}
   @keyframes nudge{0%,100%{transform:none}50%{transform:translateX(8px)}}
   /* аудио — листаются пальцем, по три в колонке */
-  .audios{display:grid;grid-auto-flow:column;grid-template-rows:repeat(3,auto);grid-auto-columns:86%;column-gap:14px;align-content:start;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -20px;padding:0 20px 8px;scroll-padding-left:20px;border-top:0}
+  .audios{display:grid;grid-auto-flow:column;grid-template-rows:repeat(3,auto);grid-auto-columns:86%;column-gap:14px;align-content:start;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin:0 -20px;padding:0 20px;scroll-padding-left:20px;border-top:0!important}
   .audios::-webkit-scrollbar{display:none}
   .audios .aud{scroll-snap-align:start}
-  .audios .aud:nth-child(3n+1){border-top:2px solid #121314}
   .audios .aud-extra{display:block!important}
   .vid:active .vid-frame svg{transform:scale(.92)}
   .pub:active .pub-title{color:#ff6b62}
